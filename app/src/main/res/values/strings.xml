@@ -1,0 +1,27 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">24iTask</string>
+
+    <string name="language">العربية</string>
+
+    <string name="str_search">Search</string>
+    <string name="no_search_results_found">No search results found.</string>
+    <string name="retry">Retry</string>
+
+
+    <!--player strings-->
+    <string name="error_no_decoder" translatable="false">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
+    <string name="error_no_secure_decoder" translatable="false">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
+    <string name="error_querying_decoders" translatable="false">Unable to query device decoders</string>
+    <string name="error_instantiating_decoder" translatable="false">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>
+    <string name="loading" translatable="false">Loading. . .</string>
+    <string name="todays_pick" translatable="false">Today\'s Pick</string>
+    <string name="qualities" translatable="false">Qualities</string>
+    <string name="recipe_card" translatable="false">Recipe Card</string>
+    <string name="subscribe_now" translatable="false">Subscribe Now!</string>
+    <string name="add_your_text_here" translatable="false">Add your text here ...</string>
+    <string name="done_str" translatable="false">Done</string>
+    <string name="ok" translatable="false">ok</string>
+    <string name="eneter_search_keyword" translatable="false">Please enter a word to make a search.</string>
+
+
+</resources>

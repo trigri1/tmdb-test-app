@@ -1,0 +1,79 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.project24.ui.player.PlayerViewModel" />
+
+        <variable
+            name="navigator"
+            type="com.test.project24.ui.player.PlayerNavigator" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/player_view_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:onClick="@{navigator::onPlayerRootClicked}">
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exo_player"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            app:use_controller="false" />
+
+
+        <RelativeLayout
+            android:id="@+id/section_play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:showView="@{viewModel.getShowPlayPauseSection()}">
+
+            <ImageView
+                android:id="@+id/img_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{navigator::onMainPlayClicked}"
+                android:src="@drawable/ic_play_circle_outline_white_48dp"
+                app:showView="@{viewModel.getShowMainPlayButton()}" />
+
+            <ImageView
+                android:id="@+id/img_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{navigator::onMainPauseClicked}"
+                android:src="@drawable/ic_pause_circle_outline_white_48dp"
+                android:visibility="gone"
+                app:showView="@{!viewModel.getShowMainPlayButton()}" />
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/img_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ProgressBar
+            android:id="@+id/pb_circular_loader"
+            style="?android:attr/progressBarStyleInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:progress="1"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            app:showView="@{viewModel.getShowPlayerLoader()}" />
+
+    </FrameLayout>
+
+</layout>
+
+
+

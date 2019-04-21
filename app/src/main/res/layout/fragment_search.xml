@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.project24.ui.main.search_frag.SearchViewModel" />
+
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/player_seekbar_base_color">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="@dimen/normal_size"
+            app:adapter="@{viewModel.moviesList}"
+            app:gridManager="@{3}"
+            app:showView="@{viewModel.getShowResults()}" />
+
+
+        <TextView
+            android:id="@+id/tv_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/normal_size"
+            android:text="@string/no_search_results_found"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/h4"
+            app:showView="@{!viewModel.getShowResults()}" />
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_no_result"
+            android:layout_centerHorizontal="true"
+            android:onClick="@{viewModel::onRetryClicked}"
+            android:text="@string/retry"
+            android:textAllCaps="false"
+            app:showView="@{!viewModel.getShowResults()}" />
+
+        <ProgressBar
+            android:id="@+id/pb_circular_loader"
+            style="?android:attr/progressBarStyleInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:progress="1"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            app:showView="@{viewModel.showLoader}" />
+    </RelativeLayout>
+</layout>
