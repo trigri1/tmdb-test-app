@@ -1,4 +1,4 @@
-package com.test.project24.ui.main.search_frag.adapter;
+package com.test.project24.ui.search.search_frag.adapter;
 
 import com.test.project24.data.network.models.MovieModel;
 import com.test.project24.ui.base.BaseDiffCallBack;

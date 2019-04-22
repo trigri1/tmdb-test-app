@@ -4,8 +4,12 @@
     <string name="language">العربية</string>
 
     <string name="str_search">Search</string>
-    <string name="no_search_results_found">No search results found.</string>
+    <string name="no_search_results_found">No results found.</string>
     <string name="retry">Retry</string>
+
+    <string name="start_date" translatable="false">Start Date</string>
+    <string name="end_date" translatable="false">End Date</string>
+    <string name="fetch_str" translatable="false">Fetch</string>
 
 
     <!--player strings-->

@@ -15,6 +15,7 @@ import com.test.project24.data.network.models.detail.MovieDetail;
 import com.test.project24.databinding.ActivityDetailBinding;
 import com.test.project24.ui.base.BaseActivity;
 import com.test.project24.ui.player.PlayerActivity;
+import com.test.project24.utils.CommonUtils;
 import com.test.project24.utils.Consts;
 
 import javax.inject.Inject;
@@ -59,7 +60,7 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
 
     private void getExtras() {
         if (getIntent().hasExtra(Consts.EXTRA_MOVIE_ID)) {
-            movieId = getIntent().getIntExtra(Consts.EXTRA_MOVIE_ID, 0);
+            movieId = getIntent().getIntExtra(Consts.EXTRA_MOVIE_ID, -1);
         }
     }
 
@@ -92,5 +93,10 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
     @Override
     public void onPlayClicked(View view, MovieDetail movieDetail) {
         PlayerActivity.toPlayerActivity(this, movieDetail.getId());
+    }
+
+    @Override
+    public void onErrorReceived(String message) {
+        CommonUtils.showToast(getApplicationContext(), message);
     }
 }

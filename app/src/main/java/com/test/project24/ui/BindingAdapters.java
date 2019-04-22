@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.test.project24.data.network.models.MovieModel;
 import com.test.project24.data.network.models.detail.MovieDetail;
 import com.test.project24.ui.main.changes_frag.adapter.ChangesAdapter;
-import com.test.project24.ui.main.search_frag.adapter.SearchAdapter;
+import com.test.project24.ui.search.search_frag.adapter.SearchAdapter;
 import com.test.project24.utils.ImageLoadingUtils;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.test.project24.ui.main.search_frag;
+package com.test.project24.ui.search.search_frag;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -15,7 +15,12 @@ import com.test.project24.ui.base.BaseViewModel;
 import com.test.project24.utils.AppLogger;
 import com.test.project24.utils.rx.SchedulerProvider;
 
-import io.reactivex.functions.Consumer;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+
+import retrofit2.HttpException;
 
 /**
  * Created by Gohar Ali on 24/02/2018.
@@ -42,25 +47,36 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
 
     public void getSearchResponse(String lang, String query, int page) {
-
+        setShowLoader(true);
         getCompositeDisposable().add(getDataManager().searchMovieByQuery(lang, query, page)
                 .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<MovieSearchModel>() {
-                    @Override
-                    public void accept(MovieSearchModel movieSearchModel) throws Exception {
-                        setShowLoader(false);
-                        searchResult.setValue(movieSearchModel);
-                        moviesList.addAll(movieSearchModel.getResults());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        setShowLoader(false);
-                        showResults.set(false);
-                        searchResult.setValue(null);
-                        AppLogger.e(TAG, "getSearchResponse() Failed", throwable);
-                    }
-                }));
+                .subscribe(
+                        movieSearchModel -> {
+                            setShowLoader(false);
+                            searchResult.setValue(movieSearchModel);
+                            moviesList.addAll(movieSearchModel.getResults());
+                        },
+                        throwable -> {
+                            searchResult.setValue(null);
+                            setShowLoader(false);
+                            setShowResults(false);
+                            if (throwable instanceof HttpException) {
+                                String errorBody = ((HttpException) throwable).response().errorBody().string();
+                                JSONObject jsonError = new JSONObject(errorBody);
+                                if (jsonError.has("status_message")) {
+                                    getViewNavigator().onErrorReceived(jsonError.getString("status_message"));
+                                }
+                                AppLogger.e(TAG, "errorBody ===>" + errorBody);
+                            } else if (throwable instanceof SocketTimeoutException) {
+                                getViewNavigator().onErrorReceived("Request timeout error.");
+                            } else if (throwable instanceof IOException) {
+                                getViewNavigator().onErrorReceived("Check your network connection.");
+                            } else {
+                                getViewNavigator().onErrorReceived("Unknown error occurred.");
+                            }
+
+                            AppLogger.e(TAG, "getSearchResponse() Failed", throwable);
+                        }));
 
     }
 

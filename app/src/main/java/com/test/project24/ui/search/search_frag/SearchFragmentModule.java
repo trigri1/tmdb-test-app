@@ -1,10 +1,10 @@
-package com.test.project24.ui.main.search_frag;
+package com.test.project24.ui.search.search_frag;
 
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.test.project24.AppViewModelFactory;
 import com.test.project24.data.IDataManager;
-import com.test.project24.ui.main.search_frag.adapter.SearchAdapter;
+import com.test.project24.ui.search.search_frag.adapter.SearchAdapter;
 import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;

@@ -2,26 +2,35 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="com.test.project24.ui.main.MainViewModel" />
     </data>
 
-    <android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/input_layout_name"
+    <merge xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/normal_size">
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/et_search"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/str_search"
-            android:imeOptions="actionSearch"
-            android:singleLine="true" />
+            android:layout_margin="@dimen/normal_size"
+            android:hint="@string/str_search">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
+                android:textSize="@dimen/h6" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </merge>
 
 
 </layout>

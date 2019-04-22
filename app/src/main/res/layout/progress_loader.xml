@@ -6,7 +6,7 @@
 
         <variable
             name="itemViewHolder"
-            type="com.test.project24.ui.main.search_frag.adapter.LoaderViewModel" />
+            type="com.test.project24.ui.search.search_frag.view_holder.LoaderViewModel" />
     </data>
 
 

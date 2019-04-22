@@ -1,4 +1,4 @@
-package com.test.project24.ui.main.search_frag.adapter;
+package com.test.project24.ui.search.search_frag.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.test.project24.data.network.models.MovieModel;
 import com.test.project24.ui.base.BaseViewHolder;
+import com.test.project24.ui.search.search_frag.view_holder.ItemViewHolder;
+import com.test.project24.ui.search.search_frag.view_holder.LoaderViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,19 @@ public class SearchAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void setData(List<MovieModel> newList) {
 
-        if (list.size() == 0) {
-            list.addAll(newList);
-            notifyItemRangeInserted(0, list.size());
-        } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SearchListDiffCallBack(list, newList));
+        if (newList.isEmpty()) {
             list.clear();
-            list.addAll(newList);
-            result.dispatchUpdatesTo(this);
+            notifyDataSetChanged();
+        } else {
+            if (list.size() == 0) {
+                list.addAll(newList);
+                notifyItemRangeInserted(0, list.size());
+            } else {
+                DiffUtil.DiffResult result = DiffUtil.calculateDiff(new SearchListDiffCallBack(list, newList));
+                list.clear();
+                list.addAll(newList);
+                result.dispatchUpdatesTo(this);
+            }
         }
     }
 
@@ -65,7 +72,7 @@ public class SearchAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         if (holder instanceof ItemViewHolder) {
             ((ItemViewHolder) holder).loadData(list.get(position).getTitle(), list.get(position).getPosterPath());
-            ((ItemViewHolder) holder).setClickListener(null);
+            ((ItemViewHolder) holder).setClickListener(list.get(position).getId());
         } else {
             if (showLoader)
                 holder.itemView.setVisibility(View.VISIBLE);

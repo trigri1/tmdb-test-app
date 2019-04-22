@@ -1,4 +1,4 @@
-package com.test.project24.ui.main;
+package com.test.project24.ui.search;
 
 import android.arch.lifecycle.ViewModelProvider;
 
@@ -10,20 +10,23 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * @author Gohar Ali
+ * @author goharali
  */
 @Module
-public class MainActivityModule {
-    @Provides
-    MainViewModel provideMainViewModel(IDataManager dataManager
-            , SchedulerProvider schedulerProvider) {
+public class SearchActivityModule {
 
-        return new MainViewModel(dataManager, schedulerProvider);
+
+    @Provides
+    SearchMainViewModel provideSearchMainViewModel(IDataManager dataManager
+            , SchedulerProvider schedulerProvider) {
+        return new SearchMainViewModel(dataManager, schedulerProvider);
     }
 
+
     @Provides
-    ViewModelProvider.Factory mainViewModelProvider(MainViewModel mainViewModel) {
+    ViewModelProvider.Factory searchMainViewModelProvider(SearchMainViewModel mainViewModel) {
         return new AppViewModelFactory<>(mainViewModel);
     }
+
 
 }

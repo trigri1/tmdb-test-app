@@ -7,26 +7,24 @@ import com.test.project24.ui.main.MainActivity;
 import com.test.project24.ui.main.MainActivityModule;
 import com.test.project24.ui.player.PlayerActivity;
 import com.test.project24.ui.player.PlayerActivityModule;
+import com.test.project24.ui.search.SearchActivity;
+import com.test.project24.ui.search.SearchActivityModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 /**
- * Created by Gohar Ali on 28/11/2017.
+ * @author Gohar Ali
  */
+
 @Module
 public abstract class ActivityBuilder {
 
-//    @Binds
-//    @IntoMap
-//    @ActivityKey(SplashActivity.class)
-//    abstract AndroidInjector.Factory<? extends AppCompatActivity> bindSplashActivity(SplashActivity splashActivity);
-
-//    @ContributesAndroidInjector(modules = {SplashActivityModule.class, CommonInjectionModule.class})
-//    abstract SplashActivity bindSplashActivity();
-
     @ContributesAndroidInjector(modules = {MainActivityModule.class, CommonInjectionModule.class})
     abstract MainActivity bindMainActivity();
+
+    @ContributesAndroidInjector(modules = {SearchActivityModule.class, CommonInjectionModule.class})
+    abstract SearchActivity bindSearchActivity();
 
     @ContributesAndroidInjector(modules = {DetailActivityModule.class, CommonInjectionModule.class})
     abstract DetailActivity bindDetaileActivity();

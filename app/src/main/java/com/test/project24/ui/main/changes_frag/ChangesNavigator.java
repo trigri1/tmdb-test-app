@@ -7,5 +7,13 @@ import java.util.List;
 public interface ChangesNavigator {
     void onChangesReceived(List<MovieDetail> list);
 
+    void onStartDateClicked();
+
+    void onEndDateClicked();
+
+    void onFetchClicked();
+
     void onRetryClicked();
+
+    void onErrorReceived(String message);
 }

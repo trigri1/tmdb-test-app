@@ -1,6 +1,5 @@
-package com.test.project24.ui.main.search_frag;
+package com.test.project24.ui.search.search_frag;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -9,14 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.test.project24.BR;
 import com.test.project24.R;
 import com.test.project24.data.network.models.MovieModel;
-import com.test.project24.data.network.models.MovieSearchModel;
 import com.test.project24.databinding.FragmentSearchBinding;
 import com.test.project24.ui.base.BaseFragment;
-import com.test.project24.ui.main.search_frag.adapter.SearchAdapter;
+import com.test.project24.ui.search.search_frag.adapter.SearchAdapter;
 import com.test.project24.utils.Consts;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 /**
- * Created by Gohar Ali on 25/02/2018.
+ * @author goharali
  */
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchViewModel>
@@ -52,7 +51,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
     private String query;
 
-    private Boolean callNext = false;
+    private Boolean callNext;
     private int page = 1;
 
     public static SearchFragment newInstance(String query, String selectedLand) {
@@ -88,6 +87,17 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     }
 
 
+    public void fetchSearchResults(String query) {
+        page = 1;
+        callNext = false;
+        this.query = query;
+        allResults.clear();
+        getViewModel().moviesList.clear();
+        getViewModel().setQuery(query);
+        getViewModel().getSearchResponse(SELECTED_LANG, query, page);
+    }
+
+
     private void setAdapter() {
 
         getViewDataBinding().rvSearch.setAdapter(adapter);
@@ -111,34 +121,29 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
 
     private void observeSearchResult() {
-        getViewModel().getSearchResults().observe(this, new Observer<MovieSearchModel>() {
-            @Override
-            public void onChanged(@Nullable MovieSearchModel movieSearchModel) {
+        getViewModel().getSearchResults().observe(this, movieSearchModel -> {
 
-                if (movieSearchModel != null
-                        && movieSearchModel.getResults() != null
-                        && movieSearchModel.getResults().size() > 0) {
+            if (movieSearchModel != null
+                    && movieSearchModel.getResults() != null
+                    && movieSearchModel.getResults().size() > 0) {
 
-                    if (movieSearchModel.getResults().size() < Consts.LIMIT) {
-                        callNext = false;
-                    } else {
-                        page++;
-                        callNext = true;
-                    }
-
-                    adapter.setShowLoader(callNext);
-
-                    allResults.addAll(movieSearchModel.getResults());
-                    getViewModel().setShowResults(true);
-
+                if (movieSearchModel.getResults().size() < Consts.LIMIT) {
+                    callNext = false;
                 } else {
-                    if (page == 1) {
-                        getViewModel().setShowResults(false);
-                    }
+                    page++;
+                    callNext = true;
                 }
 
-            }
+                adapter.setShowLoader(callNext);
 
+                allResults.addAll(movieSearchModel.getResults());
+                getViewModel().setShowResults(true);
+
+            } else {
+                if (page == 1) {
+                    getViewModel().setShowResults(false);
+                }
+            }
 
         });
     }
@@ -163,9 +168,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         return dispatchingAndroidInjector;
     }
 
+    @Override
+    public void onErrorReceived(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onRetryClicked() {
+        hideKeyboard();
         getViewModel().setShowLoader(true);
         getViewModel().getSearchResponse(SELECTED_LANG, query, page);
     }

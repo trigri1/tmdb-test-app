@@ -1,4 +1,4 @@
-package com.test.project24.ui.main.search_frag.adapter;
+package com.test.project24.ui.search.search_frag.view_holder;
 
 import android.databinding.ObservableBoolean;
 

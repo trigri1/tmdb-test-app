@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.test.project24.data.network.models.detail.MovieDetail;
 import com.test.project24.ui.base.BaseViewHolder;
-import com.test.project24.ui.main.search_frag.adapter.ItemViewHolder;
-import com.test.project24.ui.main.search_frag.adapter.LoaderViewHolder;
+import com.test.project24.ui.search.search_frag.view_holder.ItemViewHolder;
+import com.test.project24.ui.search.search_frag.view_holder.LoaderViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +27,22 @@ public class ChangesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void updateAdapter(List<MovieDetail> updatedList) {
 
-        new Handler().post(() -> {
-            if (list.size() == 0) {
-                list.addAll(updatedList);
-                notifyItemRangeInserted(0, list.size());
-            } else {
-                DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ChangesDiffCallBack(list, updatedList));
-                list.clear();
-                list.addAll(updatedList);
-                result.dispatchUpdatesTo(ChangesAdapter.this);
-            }
-        });
+        if (updatedList.isEmpty()) {
+            list.clear();
+            notifyDataSetChanged();
+        } else {
+            new Handler().post(() -> {
+                if (list.size() == 0) {
+                    list.addAll(updatedList);
+                    notifyItemRangeInserted(0, list.size());
+                } else {
+                    DiffUtil.DiffResult result = DiffUtil.calculateDiff(new ChangesDiffCallBack(list, updatedList));
+                    list.clear();
+                    list.addAll(updatedList);
+                    result.dispatchUpdatesTo(ChangesAdapter.this);
+                }
+            });
+        }
 
     }
 
@@ -69,7 +74,7 @@ public class ChangesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ((ItemViewHolder) holder).loadData(list.get(position).getTitle(), list.get(position).getPosterPath());
-            ((ItemViewHolder) holder).setClickListener(list.get(position));
+            ((ItemViewHolder) holder).setClickListener(list.get(position).getId());
         } else {
             if (showLoader)
                 holder.itemView.setVisibility(View.VISIBLE);

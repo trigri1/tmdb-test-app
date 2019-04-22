@@ -39,6 +39,7 @@
             android:name=".ui.player.PlayerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreen"/>
+        <activity android:name=".ui.search.SearchActivity" />
     </application>
 
 </manifest>

@@ -2,38 +2,50 @@ package com.test.project24.ui.main.changes_frag;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
 
 import com.test.project24.data.IDataManager;
-import com.test.project24.data.network.models.ChangesModel;
 import com.test.project24.data.network.models.detail.MovieDetail;
 import com.test.project24.ui.base.BaseViewModel;
 import com.test.project24.utils.AppLogger;
 import com.test.project24.utils.rx.SchedulerProvider;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.functions.Consumer;
+import retrofit2.HttpException;
 
 public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
 
     private static final String TAG = ChangesViewModel.class.getSimpleName();
 
-    private ObservableBoolean showLoader = new ObservableBoolean(true);
-    public ObservableList<MovieDetail> changesList = new ObservableArrayList<>();
-    private ObservableBoolean showResults = new ObservableBoolean(true);
 
+    public ObservableList<MovieDetail> changesList = new ObservableArrayList<>();
     private Map<Integer, Integer> changesPositionMap = new HashMap<>();
 
+    private ObservableBoolean showResults = new ObservableBoolean(true);
     private ObservableInt gridSpan = new ObservableInt(3);
+    private ObservableBoolean showLoader = new ObservableBoolean(true);
+
+    public ObservableField<String> startDate = new ObservableField<>();
+    public ObservableField<String> endDate = new ObservableField<>();
+
 
     public ChangesViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
+        startDate.set("Start Date");
+        endDate.set("End Date");
+        setShowLoader(false);
     }
 
     public void getChangesList(String lang, String startDate, String endDate, int page) {
@@ -41,21 +53,34 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
         getCompositeDisposable().add(
                 getDataManager().getChangesList(lang, startDate, endDate, page)
                         .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
-                        .subscribe(new Consumer<ChangesModel>() {
-                            @Override
-                            public void accept(ChangesModel changesModel) throws Exception {
-                                setShowLoader(false);
-                                changesList.addAll(adultFilter(changesModel.getResults()));
-                                makeMapWithItemPositions(changesList);
-                                getViewNavigator().onChangesReceived(changesList);
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                setShowLoader(false);
-                                AppLogger.e(TAG, "getChangesList() Failed", throwable);
-                            }
-                        }));
+                        .subscribe(
+                                changesModel -> {
+                                    setShowLoader(false);
+                                    setShowResults(true);
+                                    changesList.addAll(adultFilter(changesModel.getResults()));
+                                    makeMapWithItemPositions(changesList);
+                                    getViewNavigator().onChangesReceived(changesList);
+                                },
+                                throwable -> {
+                                    setShowLoader(false);
+                                    setShowResults(false);
+                                    if (throwable instanceof HttpException) {
+                                        String errorBody = ((HttpException) throwable).response().errorBody().string();
+                                        JSONObject jsonError = new JSONObject(errorBody);
+                                        if (jsonError.has("status_message")) {
+                                            getViewNavigator().onErrorReceived(jsonError.getString("status_message"));
+                                        }
+                                        AppLogger.e(TAG, "errorBody ===>" + errorBody);
+                                    } else if (throwable instanceof SocketTimeoutException) {
+                                        getViewNavigator().onErrorReceived("Request timeout error.");
+                                    } else if (throwable instanceof IOException) {
+                                        getViewNavigator().onErrorReceived("Check your network connection.");
+                                    } else {
+                                        getViewNavigator().onErrorReceived("Unknown error occurred.");
+                                    }
+
+                                    AppLogger.e(TAG, "getChangesList() Failed", throwable);
+                                }));
 
     }
 
@@ -99,7 +124,6 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        AppLogger.e(TAG, index + " failed of " + changesList.size());
                         callNextMovieDetail();
                         AppLogger.e(TAG, "getMovieDetaile() Failed", throwable);
                     }
@@ -107,8 +131,6 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
     }
 
     private void callNextMovieDetail() {
-//        AppLogger.e(TAG, index + " of " + changesList.size());
-
         if (++index < changesList.size()) {
             getMovieDetail(changesList.get(index).getId());
         } else {
@@ -141,12 +163,27 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
         return showResults;
     }
 
-    public void setShowResults(ObservableBoolean showResults) {
-        this.showResults = showResults;
+    public void setShowResults(boolean showResults) {
+        this.showResults.set(showResults);
     }
 
     public void onRetryClicked(View view) {
         showResults.set(true);
         getViewNavigator().onRetryClicked();
     }
+
+
+    public void onStartDateClicked(View view) {
+        getViewNavigator().onStartDateClicked();
+    }
+
+    public void onEndDateClicked(View view) {
+        getViewNavigator().onEndDateClicked();
+    }
+
+    public void onFetchClicked(View view) {
+        changesList.clear();
+        getViewNavigator().onFetchClicked();
+    }
+
 }

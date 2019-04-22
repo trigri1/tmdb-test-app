@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.test.project24.ui.main.search_frag.SearchViewModel" />
+            type="com.test.project24.ui.search.search_frag.SearchViewModel" />
 
     </data>
 
@@ -23,7 +23,7 @@
             android:padding="@dimen/normal_size"
             app:adapter="@{viewModel.moviesList}"
             app:gridManager="@{3}"
-            app:showView="@{viewModel.getShowResults()}" />
+            android:visibility="visible" />
 
 
         <TextView
