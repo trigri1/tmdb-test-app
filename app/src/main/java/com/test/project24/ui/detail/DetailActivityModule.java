@@ -8,18 +8,19 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
- * Created by Gohar Ali on 26/02/2018.
+ * @author goharali
  */
 @Module
 public class DetailActivityModule {
 
     @Provides
     DetailViewModel provideDetailViewModel(IDataManager dataManager
-            , SchedulerProvider schedulerProvider) {
+            , SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
 
-        return new DetailViewModel(dataManager, schedulerProvider);
+        return new DetailViewModel(dataManager, schedulerProvider, compositeDisposable);
     }
 
     @Provides

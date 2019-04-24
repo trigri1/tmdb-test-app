@@ -76,26 +76,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="8dp"
-                        android:text="@{viewModel.language}"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/h5"
+                        app:spannableText="@{viewModel.language}"
                         tools:text="@tools:sample/lorem/random" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.genres}"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/h5"
+                        app:spannableText="@{viewModel.genres}"
                         tools:text="@tools:sample/lorem/random" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="8dp"
-                        android:text="@{viewModel.releaseDate}"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/h5"
+                        app:spannableText="@{viewModel.releaseDate}"
                         tools:text="@tools:sample/lorem/random" />
 
                     <TextView
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/large_size"
-                android:onClick="@{viewModel::onPlayClicked}"
+                android:onClick="@{(v) -> viewModel.onPlayClicked()}"
                 android:src="@drawable/ic_play_arrow_white_24dp"
                 app:layout_anchor="@id/appbar"
                 app:layout_anchorGravity="bottom|right|end" />
@@ -126,7 +126,6 @@
             style="?android:attr/progressBarStyleInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:indeterminate="true"
             android:progress="1"

@@ -8,8 +8,10 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
- * Created by Gohar Ali on 26/02/2018.
+ * @author goharali
  */
 
 public class PlayerViewModel extends BaseViewModel<PlayerViewModel> {
@@ -19,8 +21,8 @@ public class PlayerViewModel extends BaseViewModel<PlayerViewModel> {
     private ObservableBoolean showPlayPauseSection = new ObservableBoolean(false);
 
     @Inject
-    public PlayerViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        super(dataManager, schedulerProvider);
+    public PlayerViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        super(dataManager, schedulerProvider, compositeDisposable);
     }
 
 

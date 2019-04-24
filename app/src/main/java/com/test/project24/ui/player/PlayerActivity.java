@@ -44,7 +44,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
 /**
- * Created by Gohar Ali on 26/02/2018.
+ * @author goharali
  */
 
 public class PlayerActivity extends BaseActivity<ActivityPlayerBinding, PlayerViewModel>
@@ -128,6 +128,11 @@ public class PlayerActivity extends BaseActivity<ActivityPlayerBinding, PlayerVi
             releasePlayer();
         }
         super.onStop();
+    }
+
+    @Override
+    public boolean useDefaultOrientation() {
+        return true;
     }
 
     @Override

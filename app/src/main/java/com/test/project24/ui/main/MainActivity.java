@@ -37,6 +37,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private SearchView searchView;
 
     @Override
+    public boolean useDefaultOrientation() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActivity();

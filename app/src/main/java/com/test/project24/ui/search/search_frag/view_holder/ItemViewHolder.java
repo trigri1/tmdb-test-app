@@ -10,6 +10,8 @@ import com.test.project24.R;
 import com.test.project24.databinding.MovieItemBinding;
 import com.test.project24.ui.base.BaseViewHolder;
 import com.test.project24.ui.detail.DetailActivity;
+import com.test.project24.utils.CommonUtils;
+import com.test.project24.utils.Consts;
 
 public class ItemViewHolder extends BaseViewHolder {
 
@@ -43,7 +45,13 @@ public class ItemViewHolder extends BaseViewHolder {
     }
 
     public void loadData(String title, String image) {
-        viewModel.setMovieData(title, image);
+
+        String size = Consts.SIZE_POSTER;
+        if (CommonUtils.isTablet(context)) {
+            size = Consts.SIZE_BACKDROP;
+        }
+
+        viewModel.setMovieData(title, image, size);
     }
 
 

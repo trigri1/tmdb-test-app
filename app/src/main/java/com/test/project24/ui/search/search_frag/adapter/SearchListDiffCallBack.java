@@ -6,7 +6,7 @@ import com.test.project24.ui.base.BaseDiffCallBack;
 import java.util.List;
 
 /**
- * Created by Gohar Ali on 24/02/2018.
+ * @author goharali
  */
 
 public class SearchListDiffCallBack extends BaseDiffCallBack<MovieModel> {

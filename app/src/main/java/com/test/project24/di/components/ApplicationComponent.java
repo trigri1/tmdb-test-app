@@ -18,7 +18,7 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 /**
- * Created by Gohar Ali on 30/10/2017.
+ * @author goharali
  */
 @Singleton
 @Component(modules = {AndroidInjectionModule.class

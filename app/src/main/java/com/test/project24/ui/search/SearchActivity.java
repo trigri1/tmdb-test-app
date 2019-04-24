@@ -42,6 +42,11 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchMa
     }
 
     @Override
+    public boolean useDefaultOrientation() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActivity();
@@ -76,8 +81,9 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding, SearchMa
                     CommonUtils.showToast(SearchActivity.this, R.string.eneter_search_keyword);
                     return true;
                 }
+                hideKeyboard();
                 addFragment(query);
-                return false;
+                return true;
             }
             return false;
         });

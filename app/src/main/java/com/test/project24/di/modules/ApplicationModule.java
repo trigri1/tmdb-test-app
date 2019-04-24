@@ -1,9 +1,9 @@
 package com.test.project24.di.modules;
 
-import android.app.NotificationManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.test.project24.BuildConfig;
 import com.test.project24.MyApp;
 import com.test.project24.data.AppDataManager;
@@ -24,7 +24,6 @@ import com.test.project24.utils.Consts;
 import com.test.project24.utils.NetworkUtils;
 import com.test.project24.utils.rx.AppSchedulerProvider;
 import com.test.project24.utils.rx.SchedulerProvider;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -45,24 +44,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Gohar Ali on 30/10/2017.
+ * @author goharali
  */
 
 @Module
 public class ApplicationModule {
-
-
-//    private MyApp myApp;
-
-//    public ApplicationModule(MyApp myApp) {
-//        this.myApp = myApp;
-//    }
-
-//    @Provides
-//    public MyApp provideApplication(MyApp myApp) {
-//        return myApp;
-//    }
-
 
     @Provides
     SchedulerProvider schedulerProvider() {
@@ -74,7 +60,6 @@ public class ApplicationModule {
     public Context provideContext(MyApp myApp) {
         return myApp;
     }
-
 
     @Provides
     @PreferenceInfo
@@ -117,17 +102,10 @@ public class ApplicationModule {
                 .build();
     }
 
-
     @Singleton
     @Provides
     Gson provideGson() {
         return new Gson();
-    }
-
-    @Singleton
-    @Provides
-    NotificationManager provideNotificationManager(@ApplicationContext Context context) {
-        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
 
@@ -174,8 +152,8 @@ public class ApplicationModule {
     @CacheInfo
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClientCached(@CacheInfo Cache cache
-            , @ApplicationContext Context context
+    OkHttpClient provideOkHttpClientCached(@ApplicationContext Context context
+            , @CacheInfo Cache cache
             , HttpLoggingInterceptor httpLoggingInterceptor) {
 
         return new OkHttpClient.Builder()
@@ -200,9 +178,8 @@ public class ApplicationModule {
     @Provides
     @Singleton
     @CacheInfo
-    File provideCacheDirectory(@CacheInfo String directoryName, @ApplicationContext Context context) {
+    File provideCacheDirectory(@ApplicationContext Context context, @CacheInfo String directoryName) {
         try {
-//            return new File(Environment.getExternalStorageDirectory(), directoryName);
             return new File(context.getCacheDir(), directoryName);
         } catch (Exception e) {
             AppLogger.e("provideCacheDirectory", "Exception", e);
@@ -223,7 +200,6 @@ public class ApplicationModule {
     @Singleton
     @CacheInfo
     Cache getCache(@CacheInfo File httpCacheDirectory) {
-//        File httpCacheDirectory = new File(Environment.getExternalStorageDirectory(), Consts.HTTP_CACHE_DIRECTORY);
         // Here to facilitate the file directly on the SD Kagan catalog HttpCache in
         // ， Generally put in context.getCacheDir() in
         int cacheSize = 10 * 1024 * 1024;// Set cache file size 10M

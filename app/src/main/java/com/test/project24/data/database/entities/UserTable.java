@@ -5,9 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
- * Created by Gohar Ali on 09/11/2017.
+ * Each entity must define at least 1 field as a primary key.
+ * @author goharali
  */
-//Each entity must define at least 1 field as a primary key.
 @Entity(tableName = "users")
 public class UserTable {
 

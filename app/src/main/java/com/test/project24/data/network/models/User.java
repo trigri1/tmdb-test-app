@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Salman on 4/10/2018.
+ * @author goharali
  */
 
 @Entity(tableName = "user")

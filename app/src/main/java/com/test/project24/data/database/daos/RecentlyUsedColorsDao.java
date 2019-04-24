@@ -13,7 +13,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by Gohar Ali on 19/12/2017.
+ * @author goharali
  */
 @Dao
 public interface RecentlyUsedColorsDao {

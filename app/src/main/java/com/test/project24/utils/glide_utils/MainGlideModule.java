@@ -8,7 +8,7 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
 /**
- * Created by Gohar Ali on 01/11/2017.
+ * @author goharali
  */
 @GlideModule
 public class MainGlideModule extends AppGlideModule {

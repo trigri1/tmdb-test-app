@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.test.project24.BR;
 import com.test.project24.R;
@@ -25,7 +24,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
 /**
- * Created by Gohar Ali on 26/02/2018.
+ * @author goharali
  */
 
 public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailViewModel>
@@ -51,6 +50,11 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
 
 
     @Override
+    public boolean useDefaultOrientation() {
+        return false;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getExtras();
@@ -66,8 +70,13 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
 
     @Override
     public void initActivity() {
+        setSupportActionBar(getViewDataBinding().toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getViewModel().setViewNavigator(this);
         getViewModel().getMovieDetail(movieId);
+
+        getViewDataBinding().toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     @Override
@@ -91,12 +100,15 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
     }
 
     @Override
-    public void onPlayClicked(View view, MovieDetail movieDetail) {
+    public void onPlayClicked(MovieDetail movieDetail) {
         PlayerActivity.toPlayerActivity(this, movieDetail.getId());
     }
 
     @Override
     public void onErrorReceived(String message) {
-        CommonUtils.showToast(getApplicationContext(), message);
+        if (!isFinishing()) {
+            CommonUtils.showToast(getApplicationContext(), message);
+        }
     }
+
 }

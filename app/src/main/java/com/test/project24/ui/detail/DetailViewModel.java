@@ -2,7 +2,6 @@ package com.test.project24.ui.detail;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.view.View;
 
 import com.test.project24.data.IDataManager;
 import com.test.project24.data.network.models.detail.Genre;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
 
 public class DetailViewModel extends BaseViewModel<DetailNavigator> {
@@ -42,8 +42,8 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
 
 
     @Inject
-    public DetailViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        super(dataManager, schedulerProvider);
+    public DetailViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        super(dataManager, schedulerProvider, compositeDisposable);
     }
 
 
@@ -89,12 +89,8 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
         setReleaseDate(movieModel.getReleaseDate());
         setGenres(getGenresString(movieModel.getGenres(), ","));
 
-        if (movieModel.getBackdropPath() != null && !movieModel.getBackdropPath().isEmpty())
-            setImage(movieModel.getBackdropPath());
-        else
-            setImage(movieModel.getPosterPath());
-
-        setImageSize(Consts.SIZE_BACKDROP);
+        setImage(movieModel.getPosterPath());
+        setImageSize(Consts.SIZE_POSTER);
     }
 
     public void setTitle(String title) {
@@ -106,11 +102,11 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
     }
 
     public void setLanguage(String lang) {
-        language.set(lang);
+        language.set(String.format("Language: %s", lang));
     }
 
     public void setReleaseDate(String date) {
-        releaseDate.set(date);
+        releaseDate.set(String.format("Release Date: %s", date));
     }
 
     public String getGenresString(List<Genre> list, String separator) {
@@ -156,7 +152,7 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
     }
 
     public void setGenres(String g) {
-        genres.set(g);
+        genres.set(String.format("Genres: %s", g));
     }
 
     public void setImage(String image) {
@@ -192,8 +188,8 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
     }
 
 
-    public void onPlayClicked(View view) {
-        getViewNavigator().onPlayClicked(view, movieModel);
+    public void onPlayClicked() {
+        getViewNavigator().onPlayClicked(movieModel);
     }
 
 }

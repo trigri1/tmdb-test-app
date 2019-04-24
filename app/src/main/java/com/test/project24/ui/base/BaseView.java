@@ -4,7 +4,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 
 /**
- * Created by Gohar Ali on 30/10/2017.
+ * @author goharali
  */
 
 public interface BaseView {

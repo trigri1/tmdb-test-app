@@ -14,7 +14,7 @@ import com.test.project24.data.database.entities.UserFavoritesTable;
 import com.test.project24.data.database.entities.UserTable;
 
 /**
- * Created by Gohar Ali on 09/11/2017.
+ * @author goharali
  */
 
 //database class should be abstract and singleton(because data base creation is expensive operation

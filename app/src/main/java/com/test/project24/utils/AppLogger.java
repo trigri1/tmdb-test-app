@@ -55,7 +55,7 @@ public class AppLogger {
     }
 
     public static void e(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && msg != null) {
             Log.e(tag, msg);
         }
     }

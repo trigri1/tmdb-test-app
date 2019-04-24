@@ -2,6 +2,7 @@ package com.test.project24.ui.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Build;
@@ -23,8 +24,10 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import static com.test.project24.utils.CommonUtils.isTablet;
+
 /**
- * Created by Gohar Ali on 30/10/2017.
+ * @author goharali
  */
 
 public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity implements BaseView {
@@ -39,6 +42,7 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseVi
     DB viewDataBinding;
     VM viewModel;
 
+    public abstract boolean useDefaultOrientation();
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -51,7 +55,6 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseVi
             AppLocale.changeLanguage(context, lang);
         } else {
             Locale myLocale = new Locale(lang);
-//            Locale myLocale = new Locale("ar");
             context = LocaleContextWrapper.wrap(newBase, myLocale);
         }
 
@@ -61,9 +64,19 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseVi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (!useDefaultOrientation()) {
+            setOrientation();
+        }
         super.onCreate(savedInstanceState);
-
         performDataBinding();
+    }
+
+    public void setOrientation() {
+        if (!isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        }
     }
 
 

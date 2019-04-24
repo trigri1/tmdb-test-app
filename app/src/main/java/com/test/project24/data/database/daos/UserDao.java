@@ -12,7 +12,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Created by Gohar Ali on 09/11/2017.
+ * @author goharali
  */
 //an interface that has all the logical queries to database for one entity (table)
 @Dao

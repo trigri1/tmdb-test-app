@@ -9,7 +9,7 @@ import android.os.LocaleList;
 import java.util.Locale;
 
 /**
- * Created by Gohar Ali on 5/11/2017.
+ * @author goharali
  */
 
 public class LocaleContextWrapper extends android.content.ContextWrapper {

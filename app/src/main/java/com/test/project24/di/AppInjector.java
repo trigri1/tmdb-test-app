@@ -13,7 +13,7 @@ import dagger.android.HasActivityInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 /**
- * Created by Gohar Ali on 28/11/2017.
+ * @author goharali
  */
 
 public class AppInjector {

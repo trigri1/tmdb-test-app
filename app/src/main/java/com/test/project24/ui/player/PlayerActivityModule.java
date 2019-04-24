@@ -8,13 +8,14 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class PlayerActivityModule {
 
     @Provides
-    PlayerViewModel proviPlayerViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        return new PlayerViewModel(dataManager, schedulerProvider);
+    PlayerViewModel providePlayerViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        return new PlayerViewModel(dataManager, schedulerProvider, compositeDisposable);
     }
 
     @Provides

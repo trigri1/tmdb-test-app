@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.test.project24.ui.detail.DetailViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/player_seekbar_base_color"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="@{viewModel.title}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/player_seekbar_base_color"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/normal_size"
+                android:onClick="@{(v) -> viewModel.onPlayClicked()}">
+
+                <ImageView
+                    android:id="@+id/img_backdrop"
+                    android:layout_width="330dp"
+                    android:layout_height="500dp"
+                    android:scaleType="fitXY"
+                    app:imageSize="@{viewModel.imageSize}"
+                    app:setImage="@{viewModel.image}" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_play_circle_outline_white_48dp" />
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/large_size"
+                android:orientation="vertical"
+                android:paddingTop="90dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@{viewModel.language}"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/h5"
+                    tools:text="Language" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.genres}"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/h5"
+                    tools:text="genres" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@{viewModel.releaseDate}"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/h5"
+                    tools:text="releaseDate" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large_size"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@{viewModel.detail}"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/h5"
+                    tools:text="detail" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/pb_circular_loader"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:progress="1"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:showView="@{viewModel.showLoader}" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

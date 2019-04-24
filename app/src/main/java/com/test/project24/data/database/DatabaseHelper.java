@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Created by Gohar Ali on 21/11/2017.
+ * @author goharali
  */
 @Singleton
 public class DatabaseHelper implements IDatabaseHelper {

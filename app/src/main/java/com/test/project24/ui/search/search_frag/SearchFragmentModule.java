@@ -9,13 +9,15 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class SearchFragmentModule {
 
     @Provides
-    SearchViewModel provideHorizontalViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        return new SearchViewModel(dataManager, schedulerProvider);
+    SearchViewModel provideHorizontalViewModel(IDataManager dataManager,
+                                               SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        return new SearchViewModel(dataManager, schedulerProvider, compositeDisposable);
     }
 
     @Provides

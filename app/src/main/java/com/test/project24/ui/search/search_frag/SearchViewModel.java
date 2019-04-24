@@ -6,7 +6,6 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
-import android.view.View;
 
 import com.test.project24.data.IDataManager;
 import com.test.project24.data.network.models.MovieModel;
@@ -20,10 +19,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.HttpException;
 
 /**
- * Created by Gohar Ali on 24/02/2018.
+ * @author goharali
  */
 
 public class SearchViewModel extends BaseViewModel<SearchNavigator> {
@@ -40,14 +40,19 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
     private ObservableBoolean showResults = new ObservableBoolean(true);
 
-    public SearchViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        super(dataManager, schedulerProvider);
+    public SearchViewModel(IDataManager dataManager,
+                           SchedulerProvider schedulerProvider,
+                           CompositeDisposable compositeDisposable) {
+
+        super(dataManager, schedulerProvider, compositeDisposable);
         searchResult = new MutableLiveData<>();
     }
 
 
     public void getSearchResponse(String lang, String query, int page) {
-        setShowLoader(true);
+        if (page == 1) {
+            setShowLoader(true);
+        }
         getCompositeDisposable().add(getDataManager().searchMovieByQuery(lang, query, page)
                 .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
                 .subscribe(
@@ -66,7 +71,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                                 if (jsonError.has("status_message")) {
                                     getViewNavigator().onErrorReceived(jsonError.getString("status_message"));
                                 }
-                                AppLogger.e(TAG, "errorBody ===>" + errorBody);
                             } else if (throwable instanceof SocketTimeoutException) {
                                 getViewNavigator().onErrorReceived("Request timeout error.");
                             } else if (throwable instanceof IOException) {
@@ -85,7 +89,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
         return searchResult;
     }
 
-
     public ObservableField<String> getQuery() {
         return query;
     }
@@ -102,16 +105,16 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
         showResults.set(show);
     }
 
-    public void onRetryClicked(View view) {
-        showResults.set(true);
-        getViewNavigator().onRetryClicked();
-    }
-
     public ObservableBoolean getShowLoader() {
         return showLoader;
     }
 
     public void setShowLoader(boolean showLoader) {
         this.showLoader.set(showLoader);
+    }
+
+    public void onRetryClicked() {
+        showResults.set(true);
+        getViewNavigator().onRetryClicked();
     }
 }

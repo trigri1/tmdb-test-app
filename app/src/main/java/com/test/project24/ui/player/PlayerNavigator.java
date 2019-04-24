@@ -3,7 +3,7 @@ package com.test.project24.ui.player;
 import android.view.View;
 
 /**
- * Created by Gohar Ali on 26/02/2018.
+ * @author goharali
  */
 
 public interface PlayerNavigator {

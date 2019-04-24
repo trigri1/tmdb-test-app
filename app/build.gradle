@@ -24,7 +24,6 @@ android {
             minifyEnabled false
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "BASE_URL_IMAGE", "\"https://image.tmdb.org/t/p/\"")
-            buildConfigField("String", "API_KEY", "\"3d0cda4466f269e793e9283f6ce0b75e\"")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -32,7 +31,6 @@ android {
             minifyEnabled false
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "BASE_URL_IMAGE", "\"https://image.tmdb.org/t/p/\"")
-            buildConfigField("String", "API_KEY", "\"3d0cda4466f269e793e9283f6ce0b75e\"")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -106,4 +104,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    testImplementation 'org.mockito:mockito-core:2.8.9'
 }

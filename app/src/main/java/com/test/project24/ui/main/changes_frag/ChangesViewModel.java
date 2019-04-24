@@ -5,7 +5,6 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
-import android.view.View;
 
 import com.test.project24.data.IDataManager;
 import com.test.project24.data.network.models.detail.MovieDetail;
@@ -22,7 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
 
 public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
@@ -40,51 +40,56 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
     public ObservableField<String> startDate = new ObservableField<>();
     public ObservableField<String> endDate = new ObservableField<>();
 
+    private int index = 0;
 
-    public ChangesViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        super(dataManager, schedulerProvider);
+
+    public ChangesViewModel(IDataManager dataManager,
+                            SchedulerProvider schedulerProvider,
+                            CompositeDisposable compositeDisposable) {
+
+        super(dataManager, schedulerProvider, compositeDisposable);
         startDate.set("Start Date");
         endDate.set("End Date");
         setShowLoader(false);
     }
 
-    public void getChangesList(String lang, String startDate, String endDate, int page) {
+    public Disposable getChangesList(String lang, String startDate, String endDate, int page) {
         setShowLoader(true);
-        getCompositeDisposable().add(
-                getDataManager().getChangesList(lang, startDate, endDate, page)
-                        .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
-                        .subscribe(
-                                changesModel -> {
-                                    setShowLoader(false);
-                                    setShowResults(true);
-                                    changesList.addAll(adultFilter(changesModel.getResults()));
-                                    makeMapWithItemPositions(changesList);
-                                    getViewNavigator().onChangesReceived(changesList);
-                                },
-                                throwable -> {
-                                    setShowLoader(false);
-                                    setShowResults(false);
-                                    if (throwable instanceof HttpException) {
-                                        String errorBody = ((HttpException) throwable).response().errorBody().string();
-                                        JSONObject jsonError = new JSONObject(errorBody);
-                                        if (jsonError.has("status_message")) {
-                                            getViewNavigator().onErrorReceived(jsonError.getString("status_message"));
-                                        }
-                                        AppLogger.e(TAG, "errorBody ===>" + errorBody);
-                                    } else if (throwable instanceof SocketTimeoutException) {
-                                        getViewNavigator().onErrorReceived("Request timeout error.");
-                                    } else if (throwable instanceof IOException) {
-                                        getViewNavigator().onErrorReceived("Check your network connection.");
-                                    } else {
-                                        getViewNavigator().onErrorReceived("Unknown error occurred.");
-                                    }
 
-                                    AppLogger.e(TAG, "getChangesList() Failed", throwable);
-                                }));
+        return getDataManager().getChangesList(lang, startDate, endDate, page)
+                .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
+                .subscribe(
+                        changesModel -> {
+                            setShowLoader(false);
+                            setShowResults(true);
+                            changesList.addAll(adultFilter(changesModel.getResults()));
+                            makeMapWithItemPositions(changesList);
+                            getViewNavigator().onChangesReceived(changesList);
+                        },
+                        throwable -> {
+                            setShowLoader(false);
+                            setShowResults(false);
+                            if (throwable instanceof HttpException) {
+                                String errorBody = ((HttpException) throwable).response().errorBody().string();
+                                JSONObject jsonError = new JSONObject(errorBody);
+                                if (jsonError.has("status_message")) {
+                                    getViewNavigator().onErrorReceived(jsonError.getString("status_message"));
+                                }
+                                AppLogger.e(TAG, "errorBody ===>" + errorBody);
+                            } else if (throwable instanceof SocketTimeoutException) {
+                                getViewNavigator().onErrorReceived("Request timeout error.");
+                            } else if (throwable instanceof IOException) {
+                                getViewNavigator().onErrorReceived("Check your network connection.");
+                            } else {
+                                getViewNavigator().onErrorReceived("Unknown error occurred.");
+                            }
+
+                            AppLogger.e(TAG, "getChangesList() Failed", throwable);
+                        });
 
     }
 
-    private List<MovieDetail> adultFilter(List<MovieDetail> list) {
+    public List<MovieDetail> adultFilter(List<MovieDetail> list) {
         List<MovieDetail> updatedList = new ArrayList<>();
         for (MovieDetail movie : list) {
             if (!movie.getAdult()) {
@@ -101,40 +106,31 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
         }
     }
 
-    private int index = 0;
 
-    public void getMovieDetail(int movieId) {
-        getCompositeDisposable().add(getDataManager().getMovieDetail(movieId + "", "en")
+    public Disposable getMovieDetail(int movieId) {
+        return getDataManager().getMovieDetail(movieId + "", "en")
                 .subscribeOn(getSchedulerProvider().io()).observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<MovieDetail>() {
-                    @Override
-                    public void accept(MovieDetail movieDetail) throws Exception {
-
-                        int movieId = movieDetail.getId();
-
-                        if (changesPositionMap.containsKey(movieId)) {
-                            index = changesPositionMap.get(movieId);
-                            if (changesList.size() > index) {
-                                changesList.set(index, movieDetail);
+                .subscribe(
+                        movieDetail -> {
+                            int id = movieDetail.getId();
+                            if (changesPositionMap.containsKey(id)) {
+                                index = changesPositionMap.get(id);
+                                if (changesList.size() > index) {
+                                    changesList.set(index, movieDetail);
+                                }
+                                callNextMovieDetail();
                             }
-                            AppLogger.e(TAG, index + " passed of " + changesList.size());
+                        },
+                        throwable -> {
                             callNextMovieDetail();
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        callNextMovieDetail();
-                        AppLogger.e(TAG, "getMovieDetaile() Failed", throwable);
-                    }
-                }));
+                            AppLogger.e(TAG, "getMovieDetail() Failed", throwable);
+                        });
     }
+
 
     private void callNextMovieDetail() {
         if (++index < changesList.size()) {
-            getMovieDetail(changesList.get(index).getId());
-        } else {
-            AppLogger.e(TAG, index + " of " + changesList.size() + " ====> Ended");
+            addToCompositeDisposable(getMovieDetail(changesList.get(index).getId()));
         }
     }
 
@@ -167,21 +163,22 @@ public class ChangesViewModel extends BaseViewModel<ChangesNavigator> {
         this.showResults.set(showResults);
     }
 
-    public void onRetryClicked(View view) {
+
+    //listeners
+    public void onRetryClicked() {
         showResults.set(true);
         getViewNavigator().onRetryClicked();
     }
 
-
-    public void onStartDateClicked(View view) {
+    public void onStartDateClicked() {
         getViewNavigator().onStartDateClicked();
     }
 
-    public void onEndDateClicked(View view) {
+    public void onEndDateClicked() {
         getViewNavigator().onEndDateClicked();
     }
 
-    public void onFetchClicked(View view) {
+    public void onFetchClicked() {
         changesList.clear();
         getViewNavigator().onFetchClicked();
     }

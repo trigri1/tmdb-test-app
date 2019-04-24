@@ -2,8 +2,6 @@ package com.test.project24.ui.search.search_frag.view_holder;
 
 import android.databinding.ObservableField;
 
-import com.test.project24.utils.Consts;
-
 public class ItemViewModel {
 
     private ObservableField<String> title = new ObservableField<>();
@@ -34,10 +32,10 @@ public class ItemViewModel {
         return imageSize;
     }
 
-    public void setMovieData(String title, String image) {
+    public void setMovieData(String title, String image, String size) {
         setTitle(title);
         setImage(image);
-        setImageSize(Consts.SIZE_POSTER);
+        setImageSize(size);
     }
 
 

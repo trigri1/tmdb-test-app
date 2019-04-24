@@ -8,6 +8,7 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * @author Gohar Ali
@@ -16,9 +17,8 @@ import dagger.Provides;
 public class MainActivityModule {
     @Provides
     MainViewModel provideMainViewModel(IDataManager dataManager
-            , SchedulerProvider schedulerProvider) {
-
-        return new MainViewModel(dataManager, schedulerProvider);
+            , SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        return new MainViewModel(dataManager, schedulerProvider, compositeDisposable);
     }
 
     @Provides

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,9 +22,13 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="@dimen/normal_size"
+            android:visibility="visible"
             app:adapter="@{viewModel.moviesList}"
             app:gridManager="@{3}"
-            android:visibility="visible" />
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:listitem="@layout/movie_item"
+            tools:orientation="vertical"
+            tools:spanCount="3" />
 
 
         <TextView
@@ -43,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_no_result"
             android:layout_centerHorizontal="true"
-            android:onClick="@{viewModel::onRetryClicked}"
+            android:onClick="@{(v) -> viewModel.onRetryClicked()}"
             android:text="@string/retry"
             android:textAllCaps="false"
             app:showView="@{!viewModel.getShowResults()}" />

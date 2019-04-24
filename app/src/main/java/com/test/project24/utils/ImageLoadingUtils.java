@@ -8,7 +8,7 @@ import com.test.project24.R;
 import com.test.project24.utils.glide_utils.GlideApp;
 
 /**
- * Created by Gohar Ali on 05/12/2017.
+ * @author goharali
  */
 
 public class ImageLoadingUtils {
@@ -21,7 +21,7 @@ public class ImageLoadingUtils {
         if (posterUrl != null)
             url = BuildConfig.BASE_URL_IMAGE + imageSize + "/" + posterUrl;
 
-//        AppLogger.e(TAG, url);
+        AppLogger.e(TAG, url);
 
         GlideApp.with(imageView.getContext())
                 .asBitmap()

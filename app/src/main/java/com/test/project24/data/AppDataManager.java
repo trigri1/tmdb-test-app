@@ -18,8 +18,6 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 
 /**
- * Created by Gohar Ali on 30/10/2017.
- *
  * @author Gohar Ali
  * This class is responsible for implementing all the methods that are declared in
  * @see IDataManager and return proper data types for each mathod. This is main class that is used

@@ -8,9 +8,10 @@ import com.test.project24.data.IDataManager;
 import com.test.project24.utils.rx.SchedulerProvider;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
- * Created by Gohar Ali on 16/01/2018.
+ * @author goharali
  */
 
 public class BaseViewModel<N> extends ViewModel {
@@ -23,10 +24,10 @@ public class BaseViewModel<N> extends ViewModel {
 
     private ObservableBoolean isLoading = new ObservableBoolean(true);
 
-    public BaseViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
+    public BaseViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
         this.dataManager = dataManager;
         this.schedulerProvider = schedulerProvider;
-        this.compositeDisposable = new CompositeDisposable();
+        this.compositeDisposable = compositeDisposable;
     }
 
     public void setViewNavigator(N viewNavigator) {
@@ -47,6 +48,10 @@ public class BaseViewModel<N> extends ViewModel {
 
     public CompositeDisposable getCompositeDisposable() {
         return compositeDisposable;
+    }
+
+    public void addToCompositeDisposable(Disposable disposable) {
+        getCompositeDisposable().add(disposable);
     }
 
 

@@ -32,8 +32,8 @@
     <dimen name="h8">15sp</dimen>
     <dimen name="h9">14sp</dimen>
     <dimen name="h10">11sp</dimen>
-    <dimen name="movie_image_width">180dp</dimen>
-    <dimen name="movie_image_height">250dp</dimen>
+    <dimen name="movie_image_width">250dp</dimen>
+    <dimen name="movie_image_height">180dp</dimen>
     <dimen name="back_drop_size">450dp</dimen>
 
     <bool name="isTablet">true</bool>

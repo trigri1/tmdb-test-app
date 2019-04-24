@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 
 /**
- * Created by Gohar Ali on 09/11/2017.
+ * @author goharali
  */
 @Entity
 public class Address {

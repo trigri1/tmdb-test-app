@@ -5,7 +5,7 @@ import android.support.v7.util.DiffUtil;
 import java.util.List;
 
 /**
- * Created by Gohar Ali on 24/02/2018.
+ * @author goharali
  */
 
 public abstract class BaseDiffCallBack<T> extends DiffUtil.Callback {

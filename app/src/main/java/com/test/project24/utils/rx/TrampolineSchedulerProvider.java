@@ -1,33 +1,26 @@
 package com.test.project24.utils.rx;
 
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * @author goharali
- */
-
-public class AppSchedulerProvider implements SchedulerProvider {
-
+public class TrampolineSchedulerProvider implements SchedulerProvider {
     @Override
     public Scheduler ui() {
-        return AndroidSchedulers.mainThread();
+        return Schedulers.trampoline();
     }
 
     @Override
     public Scheduler computation() {
-        return Schedulers.computation();
+        return Schedulers.trampoline();
     }
 
     @Override
     public Scheduler io() {
-        return Schedulers.io();
+        return Schedulers.trampoline();
     }
 
     @Override
     public Scheduler Queue() {
         return Schedulers.trampoline();
     }
-
 }

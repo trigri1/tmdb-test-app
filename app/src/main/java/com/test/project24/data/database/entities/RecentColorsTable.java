@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
- * Created by Gohar Ali on 19/12/2017.
+ * @author goharali
  */
 @Entity(tableName = "colors")
 public class RecentColorsTable {

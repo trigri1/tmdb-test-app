@@ -9,13 +9,14 @@ import com.test.project24.utils.rx.SchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class ChangesFragmentModule {
 
     @Provides
-    ChangesViewModel provideChangesViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider) {
-        return new ChangesViewModel(dataManager, schedulerProvider);
+    ChangesViewModel provideChangesViewModel(IDataManager dataManager, SchedulerProvider schedulerProvider, CompositeDisposable compositeDisposable) {
+        return new ChangesViewModel(dataManager, schedulerProvider, compositeDisposable);
     }
 
     @Provides

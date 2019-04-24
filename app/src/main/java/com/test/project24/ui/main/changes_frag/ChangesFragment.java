@@ -90,7 +90,7 @@ public class ChangesFragment extends BaseFragment<FragmentChangesBinding, Change
     @Override
     public void onChangesReceived(List<MovieDetail> list) {
         if (!list.isEmpty()) {
-            getViewModel().getMovieDetail(list.get(0).getId());
+            getViewModel().addToCompositeDisposable(getViewModel().getMovieDetail(list.get(0).getId()));
         }
     }
 
@@ -108,12 +108,12 @@ public class ChangesFragment extends BaseFragment<FragmentChangesBinding, Change
 
     @Override
     public void onFetchClicked() {
-        getViewModel().getChangesList(SELECTED_LANG, startDateMs, endDateMs, 1);
+        getViewModel().addToCompositeDisposable(getViewModel().getChangesList(SELECTED_LANG, startDateMs, endDateMs, 1));
     }
 
     @Override
     public void onRetryClicked() {
-        getViewModel().getChangesList(SELECTED_LANG, startDateMs, endDateMs, 1);
+        getViewModel().addToCompositeDisposable(getViewModel().getChangesList(SELECTED_LANG, startDateMs, endDateMs, 1));
     }
 
     @Override

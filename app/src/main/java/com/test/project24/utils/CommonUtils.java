@@ -15,10 +15,15 @@ import android.widget.Toast;
 import com.test.project24.R;
 
 /**
- * Created by Gohar Ali on 01/11/2017.
+ * @author goharali
  */
 
 public class CommonUtils {
+
+    public static boolean isStringEmptyOrNull(String str) {
+        return str == null || str.isEmpty();
+
+    }
 
 
     public static Snackbar showSnackBar(View view, String text, int duration) {
@@ -67,6 +72,13 @@ public class CommonUtils {
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+
+    public static boolean isTablet(Context context) {
+        return context != null && context.getResources()
+                .getBoolean(R.bool.isTablet);
+
     }
 
 
